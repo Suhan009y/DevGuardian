@@ -1,0 +1,39 @@
+{
+  "name": "nexencode",
+  "version": "1.0.0",
+  "description": "NexEncode video encoder with admin analytics, premium accounts, notifications and billing",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "nodemon server/index.js",
+    "db:init": "mysql -u root -p video_encoder < server/db/schema.sql",
+    "admin:create": "node server/scripts/createAdmin.js",
+    "db:upgrade": "mysql -u root -p video_encoder < server/db/upgrade_platform_features.sql"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.20.0",
+    "@google/generative-ai": "^0.24.1",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^7.1.0",
+    "ffmpeg-static": "^5.2.0",
+    "ffprobe-static": "^3.1.0",
+    "fluent-ffmpeg": "^2.1.2",
+    "groq-sdk": "^1.1.2",
+    "helmet": "^7.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.1.1",
+    "mysql2": "^3.6.0",
+    "socket.io": "^4.6.1",
+    "uuid": "^9.0.0",
+    "nodemailer": "^7.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

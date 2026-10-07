@@ -1,0 +1,204 @@
+/* ===== CUSTOM SLIDER ===== */
+.slider-track-wrap { position: relative; }
+
+.custom-slider {
+  position: relative;
+  padding: 8px 0;
+  cursor: pointer;
+  user-select: none;
+}
+
+.slider-track {
+  position: relative;
+  height: 4px;
+  background: var(--surface-3);
+  border-radius: 99px;
+}
+
+.slider-fill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent-blue));
+  border-radius: 99px;
+  pointer-events: none;
+  transition: width 0.05s;
+}
+
+.slider-thumb {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 18px;
+  height: 18px;
+  background: var(--text-primary);
+  border: 2px solid var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px rgba(0,255,163,0.1), var(--shadow-sm);
+  transition: box-shadow var(--transition), transform 0.1s;
+  z-index: 2;
+}
+
+.slider-thumb:hover,
+.slider-thumb:focus {
+  box-shadow: 0 0 0 7px rgba(0,255,163,0.15), var(--shadow-sm);
+  outline: none;
+}
+
+.slider-thumb.dragging {
+  transform: translate(-50%, -50%) scale(1.15);
+  box-shadow: 0 0 0 10px rgba(0,255,163,0.12), var(--shadow-sm);
+}
+
+/* ===== TOGGLE SWITCH ===== */
+.toggle-switch {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.toggle-switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle-track {
+  display: block;
+  width: 44px;
+  height: 24px;
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  transition: all var(--transition);
+  position: relative;
+}
+
+.toggle-knob {
+  position: absolute;
+  left: 3px;
+  top: 3px;
+  width: 16px;
+  height: 16px;
+  background: var(--text-muted);
+  border-radius: 50%;
+  transition: all var(--transition);
+}
+
+.toggle-switch input:checked + .toggle-track {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+}
+
+.toggle-switch input:checked + .toggle-track .toggle-knob {
+  transform: translateX(20px);
+  background: var(--accent);
+}
+
+/* ===== TERMINAL ===== */
+.terminal-card {
+  flex: 1;
+  min-height: 280px;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.terminal-body {
+  flex: 1;
+  background: #0c0c12;
+  padding: 14px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  position: relative;
+  min-height: 200px;
+}
+
+.terminal-prompt {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.prompt-symbol {
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.prompt-text {
+  font-size: 13px;
+  color: var(--accent-blue);
+}
+
+.terminal-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  line-height: 1.6;
+  resize: none;
+  outline: none;
+  min-height: 80px;
+  caret-color: var(--accent);
+}
+
+.terminal-input::placeholder { color: var(--text-dim); }
+
+.terminal-log {
+  margin-top: 12px;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  padding-top: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.terminal-log:empty { display: none; }
+
+.log-line { margin-bottom: 2px; }
+.log-line.info { color: var(--text-secondary); }
+.log-line.success { color: var(--accent); }
+.log-line.error { color: var(--accent-err); }
+.log-line.progress { color: var(--accent-blue); }
+.log-line.warn { color: var(--accent-warn); }
+
+.terminal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.btn-run {
+  padding: 7px 16px;
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+}
+
+.btn-run:hover:not(:disabled) { opacity: 0.9; }
+
+.btn-run:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}

@@ -1,0 +1,258 @@
+/* ===== CSS VARIABLES ===== */
+:root {
+  --bg:          #0a0a0f;
+  --bg-2:        #0d0d14;
+  --surface:     #111118;
+  --surface-2:   #17171f;
+  --surface-3:   #1e1e28;
+  --border:      rgba(255,255,255,0.07);
+  --border-accent: rgba(0,255,163,0.2);
+
+  --accent:      #00ffa3;
+  --accent-dim:  rgba(0,255,163,0.15);
+  --accent-blue: #00b4ff;
+  --accent-warn: #ffb347;
+  --accent-err:  #ff5f6d;
+
+  --text-primary: #e8e8f0;
+  --text-secondary: #9898b0;
+  --text-muted:  #5a5a70;
+  --text-dim:    #3a3a50;
+
+  --radius-sm:   6px;
+  --radius:      10px;
+  --radius-lg:   14px;
+
+  --shadow-sm:   0 2px 8px rgba(0,0,0,0.3);
+  --shadow:      0 8px 32px rgba(0,0,0,0.4);
+  --shadow-accent: 0 0 24px rgba(0,255,163,0.12);
+
+  --transition:  0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ===== SCROLLBAR ===== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface); }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 99px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
+
+/* ===== TYPOGRAPHY ===== */
+h1, h2, h3, h4 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.85rem;
+}
+
+.sm { font-size: 0.78rem; }
+.dim { color: var(--text-muted); }
+.accent { color: var(--accent); }
+
+code {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--surface-3);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+/* ===== UTILITY ===== */
+.hidden { display: none !important; }
+
+/* ===== LOGO ===== */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-blue));
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.logo-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: var(--text-primary);
+}
+
+/* ===== BUTTONS ===== */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  letter-spacing: 0.3px;
+}
+
+.icon-btn:hover {
+  background: var(--surface-3);
+  color: var(--text-primary);
+  border-color: rgba(255,255,255,0.12);
+}
+
+.icon-btn.danger:hover {
+  color: var(--accent-err);
+  border-color: rgba(255,95,109,0.3);
+}
+
+.icon-btn.sm {
+  padding: 4px 9px;
+  font-size: 11px;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color var(--transition);
+}
+
+.card:hover {
+  border-color: rgba(255,255,255,0.1);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-2);
+}
+
+.card-title {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+
+.card-title svg { color: var(--accent); }
+
+/* ===== TOPBAR ===== */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 24px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+
+.topbar-left, .topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.topbar-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+}
+
+.topbar-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ===== LIGHT THEME ===== */
+:root[data-theme='light'] {
+  --bg: #f4f6f8;
+  --bg-2: #eef1f4;
+  --surface: #ffffff;
+  --surface-2: #f8fafb;
+  --surface-3: #edf1f3;
+  --border: rgba(20, 34, 45, 0.11);
+  --border-accent: rgba(0, 151, 96, 0.28);
+  --accent: #009c68;
+  --accent-dim: rgba(0, 156, 104, 0.12);
+  --accent-blue: #007bb3;
+  --accent-warn: #b96b00;
+  --accent-err: #c83545;
+  --text-primary: #17212b;
+  --text-secondary: #526171;
+  --text-muted: #7e8b98;
+  --text-dim: #a7b0b9;
+  --shadow-sm: 0 2px 8px rgba(17, 34, 51, 0.08);
+  --shadow: 0 8px 32px rgba(17, 34, 51, 0.12);
+  --shadow-accent: 0 0 24px rgba(0, 156, 104, 0.10);
+}
+
+.theme-toggle {
+  min-width: 38px;
+  justify-content: center;
+  font-size: 15px;
+}
+
+.premium-user-badge {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 7px;
+  padding: 2px 7px;
+  border-radius: 99px;
+  background: var(--accent-dim);
+  border: 1px solid var(--border-accent);
+  color: var(--accent);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .5px;
+  vertical-align: middle;
+}

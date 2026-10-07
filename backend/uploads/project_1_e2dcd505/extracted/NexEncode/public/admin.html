@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
+  <title>NexEncode — Admin Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;750&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+  <link rel="stylesheet" href="css/modern.css" />
+</head>
+<body>
+  <aside class="app-sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-lockup">
+        <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 5.5 11 12l-5 6.5h4.2l5-6.5-5-6.5H6Z" fill="currentColor"/><path d="M13.8 5.5 18.8 12l-5 6.5H18l5-6.5-5-6.5h-4.2Z" fill="currentColor" opacity=".55"/></svg></div>
+        <div class="brand-copy"><span class="brand-name">NexEncode</span><span class="brand-caption">Administration</span></div>
+      </div>
+    </div>
+    <nav class="sidebar-nav" aria-label="Admin navigation">
+      <span class="sidebar-label">Admin console</span>
+      <a class="sidebar-link active" href="#overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Overview</span></a>
+      <a class="sidebar-link" href="#users"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>User management</span></a>
+      <a class="sidebar-link" href="#activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg><span>Activity & payments</span></a>
+      <a class="sidebar-link" href="#reports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M8 13h8M8 17h6"/></svg><span>Monthly reports</span></a>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">A</div>
+      <div class="sidebar-user-copy"><span class="sidebar-username">Administrator</span><small class="sidebar-user-role">Platform controls</small></div>
+    </div>
+  </aside>
+  <div class="mobile-backdrop" data-sidebar-close></div>
+
+  <header class="admin-topbar">
+    <button class="icon-btn mobile-menu-btn" data-sidebar-open aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+    <div class="topbar-context admin-mobile-title"><strong>Admin console</strong><span>Platform operations and reporting</span></div>
+    <div class="admin-top-actions">
+      <button class="icon-btn theme-toggle" data-theme-toggle onclick="toggleTheme()" aria-label="Change theme"></button>
+      <a class="icon-btn" href="/dashboard.html"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m15 18-6-6 6-6"/></svg>Encoder</a>
+      <button class="icon-btn danger" onclick="adminLogout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M14 4h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5"/></svg>Logout</button>
+    </div>
+  </header>
+
+  <main class="admin-shell" id="overview">
+    <section class="admin-heading reveal">
+      <div><p class="eyebrow">Administration & analytics</p><h1>Platform overview</h1><p>Monitor usage, manage accounts, review revenue, and export monthly subscription reports from one operational view.</p></div>
+      <button class="icon-btn" onclick="refreshAdmin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6v5h-5M4 18v-5h5"/><path d="M6.1 9a7 7 0 0 1 11.7-2.6L20 11M4 13l2.2 4.6A7 7 0 0 0 17.9 15"/></svg>Refresh data</button>
+    </section>
+
+    <section class="admin-stats">
+      <div class="admin-stat spotlight reveal" style="--delay:30ms"><span class="admin-stat-value" id="stat-users">—</span><span>Total users</span></div>
+      <div class="admin-stat spotlight reveal" style="--delay:60ms"><span class="admin-stat-value accent" id="stat-premium">—</span><span>Premium users</span></div>
+      <div class="admin-stat spotlight reveal" style="--delay:90ms"><span class="admin-stat-value" id="stat-jobs">—</span><span>Encoding jobs</span></div>
+      <div class="admin-stat spotlight reveal" style="--delay:120ms"><span class="admin-stat-value" id="stat-downloads">—</span><span>Downloads</span></div>
+      <div class="admin-stat spotlight reveal" style="--delay:150ms"><span class="admin-stat-value" id="stat-processing">—</span><span>Processing now</span></div>
+      <div class="admin-stat spotlight reveal" style="--delay:180ms"><span class="admin-stat-value error" id="stat-failed">—</span><span>Failed jobs</span></div>
+      <div class="admin-stat spotlight reveal" style="--delay:210ms"><span class="admin-stat-value" id="stat-storage">—</span><span>Input processed</span></div>
+      <div class="admin-stat spotlight reveal" style="--delay:240ms"><span class="admin-stat-value accent" id="stat-revenue">—</span><span>Total revenue</span></div>
+    </section>
+
+    <section class="analytics-grid">
+      <div class="admin-card chart-card spotlight reveal"><div class="admin-card-head"><div><h2>Revenue trend</h2><p>Paid Premium transactions by month.</p></div></div><div class="chart-canvas-wrap"><canvas id="revenue-chart"></canvas></div></div>
+      <div class="admin-card chart-card spotlight reveal"><div class="admin-card-head"><div><h2>Conversion activity</h2><p>Completed and failed jobs.</p></div></div><div class="chart-canvas-wrap"><canvas id="jobs-chart"></canvas></div></div>
+      <div class="admin-card chart-card spotlight reveal"><div class="admin-card-head"><div><h2>Account plans</h2><p>Current platform account mix.</p></div></div><div class="chart-canvas-wrap"><canvas id="plans-chart"></canvas></div></div>
+    </section>
+
+    <section class="admin-card spotlight reveal" id="users">
+      <div class="admin-card-head">
+        <div><h2>User management</h2><p>Block accounts, verify email addresses, and grant or revoke Premium.</p></div>
+        <div class="search-box"><input id="user-search" type="search" placeholder="Search username or email" onkeydown="if(event.key==='Enter') loadUsers()" /><button onclick="loadUsers()">Search</button></div>
+      </div>
+      <div class="table-scroll">
+        <table class="admin-table"><thead><tr><th>User</th><th>Role</th><th>Email</th><th>Plan</th><th>Jobs</th><th>Downloads</th><th>Joined</th><th>Actions</th></tr></thead><tbody id="users-body"><tr><td colspan="8" class="empty-cell">Loading users...</td></tr></tbody></table>
+      </div>
+    </section>
+
+    <section class="admin-grid" id="activity">
+      <div class="admin-card spotlight reveal">
+        <div class="admin-card-head"><div><h2>Recent encoding jobs</h2><p>Latest conversion and download activity.</p></div></div>
+        <div class="table-scroll"><table class="admin-table compact"><thead><tr><th>User</th><th>File</th><th>Status</th><th>Size</th><th>Downloads</th><th>Date</th></tr></thead><tbody id="jobs-body"><tr><td colspan="6" class="empty-cell">Loading jobs...</td></tr></tbody></table></div>
+      </div>
+      <div class="admin-card spotlight reveal">
+        <div class="admin-card-head"><div><h2>Payments & invoices</h2><p>Paid Premium transactions.</p></div></div>
+        <div class="table-scroll payments-table-scroll"><table class="admin-table compact"><thead><tr><th>User</th><th>Invoice</th><th>Amount</th><th>Provider</th><th>Date</th></tr></thead><tbody id="payments-body"><tr><td colspan="5" class="empty-cell">Loading payments...</td></tr></tbody></table></div>
+      </div>
+    </section>
+
+    <section class="admin-card report-card spotlight reveal" id="reports">
+      <div class="admin-card-head">
+        <div><h2>Monthly revenue & subscription report</h2><p>Review one month and export transaction data as CSV.</p></div>
+        <div class="report-controls"><input type="month" id="report-month" /><button class="icon-btn" onclick="loadMonthlyReport()">Generate</button><button class="icon-btn" onclick="exportMonthlyReport()">Export CSV</button></div>
+      </div>
+      <div class="report-summary" id="report-summary"></div>
+      <div class="table-scroll"><table class="admin-table compact"><thead><tr><th>Invoice</th><th>User</th><th>Amount</th><th>Provider</th><th>Date</th></tr></thead><tbody id="report-body"><tr><td colspan="5" class="empty-cell">Choose a month to generate a report.</td></tr></tbody></table></div>
+    </section>
+
+    <div class="admin-message" id="admin-message"></div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/modern-ui.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

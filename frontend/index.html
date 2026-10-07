@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#e8eef5" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
+<title>DevGuardian</title>
+<link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css" />
+<link rel="stylesheet" href="/static/style.css" />
+<script>
+  (function () {
+    const stored = localStorage.getItem("dg-theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const theme = stored || (prefersDark ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+</head>
+<body>
+<div class="paper-grain" aria-hidden="true"></div>
+
+<div class="floating-stickers" aria-hidden="true">
+  <span class="float-sticker float-sticker--a">🛡️</span>
+  <span class="float-sticker float-sticker--b">🐞</span>
+  <span class="float-sticker float-sticker--c">✦</span>
+  <span class="float-sticker float-sticker--d">✎</span>
+</div>
+
+<header class="site-header">
+  <a href="/" class="brand">
+    <span class="brand__stamp">DG</span>
+    <span>
+      <strong>DEVGUARDIAN</strong>
+      <small>AI CODE REVIEW</small>
+    </span>
+  </a>
+  <div class="header-actions">
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle theme">
+      <span class="icon-sun" aria-hidden="true">☀</span>
+      <span class="icon-moon" aria-hidden="true">☾</span>
+    </button>
+    <a href="#pipeline" class="nav-link">HOW IT WORKS</a>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <p class="eyebrow">STATIC ANALYSIS · DEPENDENCY SCANNING · LOCAL AI</p>
+    <h1>
+      REVIEW YOUR CODE.
+      <span class="accent">without sending it anywhere.</span>
+    </h1>
+    <p class="sub">
+      Upload a project and DevGuardian runs static analysis and dependency scanning,
+      then explains every finding in plain English using a locally-hosted AI model —
+      no cloud API, no cost, no code sent anywhere.
+    </p>
+    <div class="doodle-line" aria-hidden="true"><span>✦</span><i></i><span>✦</span></div>
+    <div class="hero-cta">
+      <a href="#upload"><button class="btn btn-solid">Analyze a project ↓</button></a>
+      <a href="#pipeline"><button class="btn btn-outline">See how it works</button></a>
+    </div>
+
+    <div class="sticky-row" aria-hidden="true">
+      <div class="sticky-note sticky-note--1"><span class="emoji">🐞</span>bugs caught early</div>
+      <div class="sticky-note sticky-note--2"><span class="emoji">🔒</span>vulns flagged fast</div>
+      <div class="sticky-note sticky-note--3"><span class="emoji">✨</span>explained in plain English</div>
+    </div>
+  </section>
+
+  <div id="pipeline" class="section" data-reveal>
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">HOW IT WORKS</p>
+        <h2>The pipeline</h2>
+      </div>
+      <p>Every upload runs through the same six always-on steps.</p>
+    </div>
+    <div class="bento">
+      <div class="bento-card" data-reveal><span class="step-no">01</span><h3>Upload &amp; extract</h3><p>Drop in a project ZIP. It's safely extracted with zip-slip protection.</p></div>
+      <div class="bento-card" data-reveal><span class="step-no">02</span><h3>Detect language</h3><p>File extensions are scanned to identify the project's dominant language.</p></div>
+      <div class="bento-card" data-reveal><span class="step-no">03</span><h3>Static analysis</h3><p>Semgrep scans for bugs, insecure patterns, and code-quality issues.</p></div>
+      <div class="bento-card" data-reveal><span class="step-no">04</span><h3>Dependency scan</h3><p>pip-audit / npm audit check dependencies against known CVEs.</p></div>
+      <div class="bento-card" data-reveal><span class="step-no">05</span><h3>AI explanation</h3><p>A local Ollama model explains each finding and suggests a fix — grounded, not free-form.</p></div>
+      <div class="bento-card" data-reveal><span class="step-no">06</span><h3>Dashboard</h3><p>Severity breakdown, quality score, and export to CSV.</p></div>
+    </div>
+  </div>
+
+  <div id="upload" class="section card" data-reveal>
+    <div class="tape tape--pink" aria-hidden="true"></div>
+    <div class="section-head">
+      <div>
+        <p class="eyebrow">GET STARTED</p>
+        <h2>Upload a project</h2>
+      </div>
+      <p>.zip of a Python or JS/TS project — max 25MB, 500 files.</p>
+    </div>
+    <form id="upload-form">
+      <div class="upload-zone">
+        <input type="file" id="zip-file" accept=".zip" required />
+        <button type="submit" id="upload-btn" class="btn btn-solid">Analyze →</button>
+      </div>
+    </form>
+    <div id="upload-status" class="muted" style="margin-top:12px;"></div>
+    <div id="upload-error" class="error-msg"></div>
+  </div>
+
+  <div class="section card" data-reveal>
+    <div class="tape tape--mint" aria-hidden="true"></div>
+    <div class="section-head">
+      <div><p class="eyebrow">HISTORY</p><h2>Previous projects</h2></div>
+      <button class="btn btn-outline" id="refresh-btn" style="padding:9px 16px; font-size:0.72rem;">Refresh</button>
+    </div>
+    <table id="projects-table">
+      <thead><tr><th>Project</th><th>Language</th><th>Findings</th><th>Quality</th><th>Status</th><th>Uploaded</th></tr></thead>
+      <tbody id="projects-body"></tbody>
+    </table>
+    <div id="projects-empty" class="empty-state">No projects analyzed yet — upload one above to get started ✎</div>
+  </div>
+</main>
+
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script src="/static/effects.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

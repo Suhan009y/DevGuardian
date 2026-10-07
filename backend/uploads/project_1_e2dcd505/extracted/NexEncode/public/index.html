@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="dark light" />
+  <title>NexEncode — Video Encoder</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;750&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/modern.css" />
+  <link rel="stylesheet" href="css/auth-modern.css" />
+</head>
+<body class="auth-page">
+  <div class="auth-shell">
+    <section class="auth-showcase" aria-label="NexEncode product preview">
+      <div class="showcase-brand">
+        <div class="brand-lockup">
+          <div class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M6 5.5 11 12l-5 6.5h4.2l5-6.5-5-6.5H6Z" fill="currentColor"/><path d="M13.8 5.5 18.8 12l-5 6.5H18l5-6.5-5-6.5h-4.2Z" fill="currentColor" opacity=".55"/></svg>
+          </div>
+          <div class="brand-copy"><span class="brand-name">NexEncode</span><span class="brand-caption">Video processing workspace</span></div>
+        </div>
+      </div>
+
+      <div class="showcase-content reveal is-visible">
+        <span class="showcase-pill"><i></i> Local processing workspace ready</span>
+        <h1>Encode with control.<br /><span>Deliver less weight.</span></h1>
+        <p>A focused workspace for compression, format conversion, FFmpeg control, job tracking, and repeatable video workflows.</p>
+      </div>
+
+      <div class="workflow-preview spotlight reveal is-visible">
+        <div class="workflow-top"><strong>Recent workflow</strong><span>H.265 · 1080p · CRF 24</span></div>
+        <div class="workflow-row">
+          <div class="workflow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="m10 13 5 3-5 3v-6Z"/></svg></div>
+          <div class="workflow-copy"><strong>launch-film-master.mov</strong><span>1.82 GB · ProRes source</span></div>
+          <span class="workflow-status">Uploaded</span>
+        </div>
+        <div class="workflow-row">
+          <div class="workflow-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v4M12 17v4M3 12h4M17 12h4"/><circle cx="12" cy="12" r="4"/><path d="m5.6 5.6 2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg></div>
+          <div class="workflow-copy"><strong>Efficient output</strong><span>Projected 61% reduction</span></div>
+          <span class="workflow-status">Ready</span>
+        </div>
+      </div>
+    </section>
+
+    <main class="auth-panel-wrap">
+      <button class="icon-btn theme-toggle auth-theme" data-theme-toggle onclick="toggleTheme()" aria-label="Change theme"></button>
+      <div class="auth-card spotlight reveal is-visible">
+        <div class="auth-mobile-brand">
+          <div class="brand-lockup">
+            <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 5.5 11 12l-5 6.5h4.2l5-6.5-5-6.5H6Z" fill="currentColor"/><path d="M13.8 5.5 18.8 12l-5 6.5H18l5-6.5-5-6.5h-4.2Z" fill="currentColor" opacity=".55"/></svg></div>
+            <div class="brand-copy"><span class="brand-name">NexEncode</span><span class="brand-caption">Video processing workspace</span></div>
+          </div>
+        </div>
+
+        <div class="auth-kicker" id="auth-kicker">Secure workspace</div>
+        <h2 class="auth-heading" id="auth-title">Welcome back</h2>
+        <p class="auth-subheading" id="auth-subtitle">Sign in to continue to your encoding dashboard.</p>
+
+        <div class="tab-bar">
+          <button class="tab-btn active" data-tab="login" onclick="switchTab('login')">Sign in</button>
+          <button class="tab-btn" data-tab="register" onclick="switchTab('register')">Create account</button>
+        </div>
+
+        <form class="auth-form active" id="form-login" onsubmit="handleLogin(event)">
+          <div class="field-group"><label for="login-email">Email address</label><input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" required /></div>
+          <div class="field-group"><label for="login-password">Password</label><input type="password" id="login-password" placeholder="Enter your password" autocomplete="current-password" required /></div>
+          <button type="submit" class="btn-submit" id="login-btn">Continue to workspace</button>
+          <button type="button" class="auth-link-btn" onclick="switchTab('forgot')">Forgot your password?</button>
+          <div class="auth-msg" id="login-msg" aria-live="polite"></div>
+        </form>
+
+        <form class="auth-form" id="form-register" onsubmit="handleRegister(event)">
+          <div class="field-group"><label for="reg-username">Username</label><input type="text" id="reg-username" placeholder="your_handle" autocomplete="username" required /></div>
+          <div class="field-group"><label for="reg-email">Email address</label><input type="email" id="reg-email" placeholder="you@example.com" autocomplete="email" required /></div>
+          <div class="field-group"><label for="reg-password">Password</label><input type="password" id="reg-password" placeholder="Minimum 8 characters" autocomplete="new-password" required /></div>
+          <button type="submit" class="btn-submit" id="register-btn">Create NexEncode account</button>
+          <div class="auth-msg" id="register-msg" aria-live="polite"></div>
+        </form>
+
+        <form class="auth-form" id="form-forgot" onsubmit="handleForgotPassword(event)">
+          <div class="field-group"><label for="forgot-email">Account email</label><input type="email" id="forgot-email" placeholder="you@example.com" autocomplete="email" required /></div>
+          <button type="submit" class="btn-submit" id="forgot-btn">Send reset link</button>
+          <button type="button" class="auth-link-btn" onclick="switchTab('login')">Back to sign in</button>
+          <div class="auth-msg" id="forgot-msg" aria-live="polite"></div>
+        </form>
+
+        <form class="auth-form" id="form-reset" onsubmit="handleResetPassword(event)">
+          <div class="field-group"><label for="reset-password">New password</label><input type="password" id="reset-password" placeholder="Minimum 8 characters" autocomplete="new-password" required /></div>
+          <div class="field-group"><label for="reset-confirm">Confirm password</label><input type="password" id="reset-confirm" placeholder="Repeat your password" autocomplete="new-password" required /></div>
+          <button type="submit" class="btn-submit" id="reset-btn">Update password</button>
+          <div class="auth-msg" id="reset-msg" aria-live="polite"></div>
+        </form>
+
+        <p class="auth-footnote">NexEncode processes your jobs through your configured local server.</p>
+      </div>
+    </main>
+  </div>
+  <script src="js/theme.js"></script>
+  <script src="js/modern-ui.js"></script>
+  <script src="js/auth.js"></script>
+</body>
+</html>

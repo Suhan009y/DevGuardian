@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="theme-color" content="#e8eef5" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0b1220" media="(prefers-color-scheme: dark)" />
+<title>DevGuardian — Report</title>
+<link rel="stylesheet" href="https://unpkg.com/lenis@1.3.26/dist/lenis.css" />
+<link rel="stylesheet" href="/static/style.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
+<script>
+  (function () {
+    const stored = localStorage.getItem("dg-theme");
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const theme = stored || (prefersDark ? "dark" : "light");
+    document.documentElement.setAttribute("data-theme", theme);
+  })();
+</script>
+</head>
+<body>
+<div class="paper-grain" aria-hidden="true"></div>
+
+<header class="site-header">
+  <a href="/" class="brand">
+    <span class="brand__stamp">DG</span>
+    <span><strong>DEVGUARDIAN</strong><small>AI CODE REVIEW</small></span>
+  </a>
+  <div class="header-actions">
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode" title="Toggle theme">
+      <span class="icon-sun" aria-hidden="true">☀</span>
+      <span class="icon-moon" aria-hidden="true">☾</span>
+    </button>
+    <a href="/" class="nav-link">← ALL PROJECTS</a>
+  </div>
+</header>
+
+<main>
+  <div class="section card" data-reveal>
+    <div class="tape tape--yellow" aria-hidden="true"></div>
+    <p class="eyebrow">PROJECT REPORT</p>
+    <h2 id="project-title" style="font-family:var(--font-display); font-size:1.9rem; margin:4px 0 0;">Loading…</h2>
+    <div class="stat-row">
+      <div class="stat"><div class="value" id="stat-quality">–</div><div class="label">Quality score</div></div>
+      <div class="stat"><div class="value"><span id="stat-total" data-counter="0">0</span></div><div class="label">Total findings</div></div>
+      <div class="stat"><div class="value" id="stat-language" style="font-size:1.15rem;">–</div><div class="label">Language</div></div>
+      <div class="stat"><div class="value" id="stat-status" style="font-size:1.15rem;">–</div><div class="label">Status</div></div>
+    </div>
+  </div>
+
+  <div class="section card" data-reveal>
+    <div class="tape tape--blue" aria-hidden="true"></div>
+    <div class="section-head"><h2>Findings by severity</h2></div>
+    <canvas id="severity-chart"></canvas>
+  </div>
+
+  <div class="section card" data-reveal>
+    <div class="tape tape--purple" aria-hidden="true"></div>
+    <div class="section-head">
+      <h2>Findings</h2>
+      <div style="display:flex; gap:10px;">
+        <button id="explain-btn" class="btn btn-accent">✨ Generate AI explanations</button>
+        <a href="#" id="export-link"><button class="btn btn-outline">Export CSV</button></a>
+      </div>
+    </div>
+    <div id="explain-status" class="muted" style="margin-bottom:10px;"></div>
+    <table id="findings-table">
+      <thead><tr><th>Severity</th><th>Tool</th><th>File</th><th>Message</th></tr></thead>
+      <tbody id="findings-body"></tbody>
+    </table>
+    <div id="findings-empty" class="empty-state">No findings — nothing here yet ✦</div>
+  </div>
+</main>
+
+<script src="https://unpkg.com/lenis@1.3.26/dist/lenis.min.js"></script>
+<script src="/static/effects.js"></script>
+<script src="/static/report.js"></script>
+</body>
+</html>

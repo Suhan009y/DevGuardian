@@ -1,0 +1,546 @@
+.auth-page { min-height: 100vh; background: var(--bg); }
+.auth-shell { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(430px, .9fr); }
+.auth-showcase {
+  position: relative; overflow: hidden; padding: clamp(36px, 5vw, 72px);
+  display: flex; flex-direction: column; justify-content: space-between;
+  border-right: 1px solid var(--border);
+  background:
+    linear-gradient(140deg, rgba(124,109,242,.13), transparent 38%),
+    var(--surface-2);
+}
+.auth-showcase::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none; opacity: .45;
+  background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 54px 54px;
+  mask-image: linear-gradient(to bottom, black, transparent 78%);
+}
+.showcase-brand { position: relative; z-index: 1; }
+.showcase-content { position: relative; z-index: 1; max-width: 680px; padding: 80px 0 50px; }
+.showcase-pill {
+  display: inline-flex; align-items: center; gap: 8px; padding: 7px 10px; margin-bottom: 22px;
+  border: 1px solid var(--border); border-radius: 999px; background: var(--surface); color: var(--text-secondary); font-size: 10px;
+}
+.showcase-pill i { width: 7px; height: 7px; border-radius: 50%; background: #55c48b; box-shadow: 0 0 0 4px rgba(85,196,139,.12); }
+.showcase-content h1 { max-width: 660px; font-size: clamp(42px, 6vw, 78px); line-height: .98; letter-spacing: -3.7px; }
+.showcase-content h1 span { color: var(--accent); }
+.showcase-content > p { max-width: 590px; margin-top: 24px; color: var(--text-secondary); font-size: 14px; line-height: 1.75; }
+.workflow-preview {
+  position: relative; z-index: 1; max-width: 760px; padding: 15px;
+  border: 1px solid var(--border); border-radius: 20px; background: color-mix(in srgb, var(--surface) 82%, transparent);
+  box-shadow: var(--shadow); backdrop-filter: blur(14px);
+}
+.workflow-top { display: flex; align-items: center; justify-content: space-between; padding: 3px 4px 14px; }
+.workflow-top strong { font-size: 11px; }
+.workflow-top span { color: var(--text-muted); font: 9px 'JetBrains Mono', monospace; }
+.workflow-row { display: grid; grid-template-columns: 42px 1fr auto; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: 13px; background: var(--surface-2); }
+.workflow-row + .workflow-row { margin-top: 8px; }
+.workflow-icon { width: 36px; height: 36px; display: grid; place-items: center; border-radius: 10px; background: var(--accent-dim); color: var(--accent); }
+.workflow-icon svg { width: 17px; height: 17px; }
+.workflow-copy strong { display: block; font-size: 11px; }
+.workflow-copy span { display: block; margin-top: 4px; color: var(--text-muted); font-size: 9px; }
+.workflow-status { padding: 5px 8px; border-radius: 7px; color: #4ab279; background: rgba(74,178,121,.10); font: 9px 'JetBrains Mono', monospace; }
+
+.auth-panel-wrap { position: relative; display: grid; place-items: center; padding: 32px; background: var(--bg); }
+.auth-theme { position: absolute; right: 24px; top: 24px; z-index: 5; }
+.auth-card { width: min(430px, 100%); padding: 30px; border: 1px solid var(--border); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
+.auth-mobile-brand { display: none; margin-bottom: 28px; }
+.auth-kicker { margin-bottom: 7px; color: var(--accent); font: 700 9px 'JetBrains Mono', monospace; letter-spacing: 1px; text-transform: uppercase; }
+.auth-heading { font-size: 28px; letter-spacing: -.9px; }
+.auth-subheading { margin-top: 9px; margin-bottom: 25px; color: var(--text-secondary); font-size: 11px; line-height: 1.6; }
+.tab-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; margin-bottom: 24px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface-2); }
+.tab-btn { min-height: 38px; border: 0; border-radius: 8px; background: transparent; color: var(--text-muted); cursor: pointer; font-size: 11px; font-weight: 680; transition: var(--transition); }
+.tab-btn:hover { color: var(--text-primary); }
+.tab-btn.active { background: var(--surface); color: var(--text-primary); box-shadow: var(--shadow-sm), inset 0 0 0 1px var(--border); }
+.auth-form { display: none; }
+.auth-form.active { display: flex; flex-direction: column; gap: 15px; animation: form-in .35s cubic-bezier(.2,.8,.2,1); }
+@keyframes form-in { from { opacity: 0; transform: translateY(6px); } }
+.field-group { display: flex; flex-direction: column; gap: 7px; }
+.field-group label { color: var(--text-secondary); font-size: 10px; font-weight: 650; }
+.field-group input { min-height: 46px; padding: 0 13px; border: 1px solid var(--border); border-radius: 11px; outline: 0; background: var(--surface-2); color: var(--text-primary); font-size: 12px; transition: var(--transition); }
+.field-group input::placeholder { color: var(--text-dim); }
+.field-group input:focus { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 3px var(--accent-dim); }
+.btn-submit { min-height: 46px; margin-top: 4px; border: 0; border-radius: 11px; cursor: pointer; font-size: 11px; font-weight: 720; transition: var(--transition); }
+.btn-submit:disabled { opacity: .6; cursor: wait; }
+.auth-link-btn { border: 0; background: none; color: var(--text-muted); cursor: pointer; font-size: 10px; transition: color var(--transition); }
+.auth-link-btn:hover { color: var(--accent); }
+.auth-msg { min-height: 18px; text-align: center; color: var(--text-muted); font-size: 10px; line-height: 1.5; }
+.auth-msg.error { color: var(--accent-err); }
+.auth-msg.success { color: #4ab279; }
+.dev-link { display: block; margin-top: 7px; color: var(--accent); word-break: break-all; }
+.auth-footnote { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--border); text-align: center; color: var(--text-dim); font-size: 9px; }
+
+@media (max-width: 980px) {
+  .auth-shell { grid-template-columns: 1fr; }
+  .auth-showcase { display: none; }
+  .auth-panel-wrap { min-height: 100vh; padding: 24px; }
+  .auth-mobile-brand { display: block; }
+}
+@media (max-width: 520px) {
+  .auth-panel-wrap { padding: 16px; align-items: center; }
+  .auth-card { padding: 24px 20px; border-radius: 18px; }
+  .auth-theme { right: 16px; top: 16px; }
+}
+
+/* =========================================================
+   Desktop viewport-fit showcase correction — 2026-06-30
+   This stylesheet is loaded last, so the final responsive overrides live
+   here to ensure they win over the base authentication presentation.
+   ========================================================= */
+@media (min-width: 981px) {
+  .auth-page,
+  .auth-shell {
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .auth-showcase {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    align-content: stretch;
+    justify-content: initial;
+    row-gap: clamp(12px, 1.7vh, 18px);
+    height: 100%;
+    min-height: 0;
+    padding: clamp(20px, 3.2vh, 34px) clamp(30px, 4.6vw, 64px);
+  }
+
+  .showcase-brand {
+    align-self: start;
+  }
+
+  .showcase-content {
+    align-self: start;
+    min-height: auto;
+    max-width: 700px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .showcase-pill {
+    margin-bottom: clamp(8px, 1.2vh, 12px);
+    padding: 6px 10px;
+  }
+
+  .showcase-content h1 {
+    max-width: 660px;
+    margin: 0;
+    font-size: clamp(38px, min(4vw, 6.9vh), 64px);
+    line-height: .94;
+    letter-spacing: clamp(-3px, -.18vw, -1.8px);
+  }
+
+  .showcase-content > p {
+    max-width: 600px;
+    margin-top: clamp(9px, 1.5vh, 15px);
+    margin-bottom: 0;
+    font-size: clamp(11px, min(.86vw, 1.65vh), 14px);
+    line-height: 1.5;
+  }
+
+  .workflow-preview {
+    align-self: start;
+    width: 100%;
+    max-width: 760px;
+    margin-top: clamp(2px, .45vh, 5px);
+    padding: clamp(8px, 1.25vh, 12px);
+    border-radius: 17px;
+  }
+
+  .workflow-top {
+    padding: 2px 3px clamp(7px, 1vh, 10px);
+  }
+
+  .workflow-row {
+    grid-template-columns: clamp(30px, 4vh, 36px) minmax(0, 1fr) auto;
+    gap: 10px;
+    padding: clamp(7px, 1.05vh, 10px);
+    border-radius: 11px;
+  }
+
+  .workflow-row + .workflow-row {
+    margin-top: clamp(5px, .75vh, 7px);
+  }
+
+  .workflow-icon {
+    width: clamp(28px, 4vh, 34px);
+    height: clamp(28px, 4vh, 34px);
+  }
+
+  .workflow-copy strong {
+    font-size: clamp(9px, 1.3vh, 11px);
+  }
+
+  .workflow-copy span,
+  .workflow-status,
+  .workflow-top span {
+    font-size: clamp(8px, 1.08vh, 9px);
+  }
+
+  .auth-panel-wrap {
+    height: 100%;
+    min-height: 0;
+    padding: clamp(18px, 3vh, 32px);
+  }
+
+  .auth-card {
+    width: min(430px, 100%);
+    max-height: none;
+    overflow: visible;
+    padding: clamp(22px, 3.2vh, 30px);
+  }
+}
+
+@media (min-width: 981px) and (max-height: 820px) {
+  .auth-showcase {
+    row-gap: 9px;
+    padding-top: 16px;
+    padding-bottom: 16px;
+  }
+
+  .showcase-content h1 {
+    font-size: clamp(34px, min(3.55vw, 5.8vh), 48px);
+    line-height: .94;
+    letter-spacing: -2.2px;
+  }
+
+  .showcase-content > p {
+    max-width: 560px;
+    margin-top: 8px;
+    font-size: 10.5px;
+    line-height: 1.4;
+  }
+
+  .workflow-preview {
+    margin-top: 2px;
+    padding: 7px;
+  }
+
+  .workflow-top {
+    padding-bottom: 6px;
+  }
+
+  .workflow-row {
+    padding: 6px 8px;
+  }
+
+  .workflow-row + .workflow-row {
+    margin-top: 4px;
+  }
+
+  .auth-card {
+    padding: 20px 24px;
+  }
+
+  .auth-heading {
+    font-size: 25px;
+  }
+
+  .auth-subheading,
+  .tab-bar {
+    margin-bottom: 14px;
+  }
+
+  .field-group input,
+  .btn-submit {
+    min-height: 43px;
+  }
+
+  .auth-form.active {
+    gap: 10px;
+  }
+
+  .auth-footnote {
+    margin-top: 12px;
+    padding-top: 10px;
+  }
+}
+
+@media (min-width: 981px) and (max-height: 700px) {
+  .auth-showcase {
+    row-gap: 6px;
+    padding-top: 11px;
+    padding-bottom: 11px;
+  }
+
+  .showcase-content h1 {
+    font-size: clamp(31px, min(3.2vw, 5.25vh), 42px);
+  }
+
+  .showcase-content > p {
+    margin-top: 6px;
+    font-size: 9.5px;
+    line-height: 1.32;
+  }
+
+  .workflow-preview {
+    margin-top: 4px;
+    padding: 5px;
+  }
+
+  .workflow-row {
+    padding: 5px 7px;
+  }
+}
+
+/* Preserve the bold multi-line hero treatment while keeping every word visible. */
+@media (min-width: 981px) and (max-height: 820px) {
+  .showcase-content h1 {
+    max-width: clamp(430px, 32vw, 520px);
+    font-size: clamp(46px, min(3.75vw, 7.7vh), 62px);
+    line-height: .94;
+  }
+}
+
+@media (min-width: 981px) and (max-height: 700px) {
+  .showcase-content h1 {
+    max-width: clamp(400px, 31vw, 470px);
+    font-size: clamp(42px, min(3.65vw, 7.35vh), 52px);
+  }
+}
+
+
+/* Targeted spacing refinement — 2026-06-30 */
+.auth-msg:empty {
+  display: none;
+}
+
+@media (min-width: 981px) {
+  .auth-showcase {
+    grid-template-rows: auto auto auto;
+    align-content: start;
+  }
+
+  .workflow-preview {
+    align-self: start;
+    margin-top: clamp(2px, .45vh, 5px);
+  }
+
+  .auth-footnote {
+    margin-top: 7px;
+    padding-top: 10px;
+  }
+}
+
+@media (min-width: 981px) and (max-height: 820px) {
+  .auth-showcase {
+    row-gap: 7px;
+  }
+
+  .workflow-preview {
+    margin-top: 1px;
+  }
+
+  .auth-footnote {
+    margin-top: 5px;
+    padding-top: 8px;
+  }
+}
+
+/* =========================================================
+   Left showcase spacing refinement — 2026-06-30
+   Keeps the login panel untouched and gives the left-side
+   content more breathing room without reintroducing scrolling.
+   ========================================================= */
+@media (min-width: 981px) {
+  .auth-showcase {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  .showcase-brand {
+    flex: 0 0 auto;
+    margin-bottom: clamp(22px, 3.2vh, 32px);
+  }
+
+  .showcase-content {
+    flex: 0 0 auto;
+    align-self: stretch;
+    width: 100%;
+  }
+
+  .showcase-pill {
+    margin-bottom: clamp(15px, 2vh, 20px);
+  }
+
+  .showcase-content h1 {
+    line-height: 1.02;
+    letter-spacing: clamp(-2.8px, -.15vw, -1.6px);
+  }
+
+  .showcase-content > p {
+    margin-top: clamp(14px, 2vh, 20px);
+    line-height: 1.58;
+  }
+
+  .workflow-preview {
+    flex: 0 0 auto;
+    margin-top: clamp(24px, 3.4vh, 34px);
+  }
+}
+
+@media (min-width: 981px) and (max-height: 820px) {
+  .showcase-brand {
+    margin-bottom: 18px;
+  }
+
+  .showcase-pill {
+    margin-bottom: 12px;
+  }
+
+  .showcase-content h1 {
+    line-height: 1;
+  }
+
+  .showcase-content > p {
+    margin-top: 11px;
+    line-height: 1.48;
+  }
+
+  .workflow-preview {
+    margin-top: 20px;
+  }
+}
+
+/* =========================================================
+   Left showcase font scale + vertical reach — 2026-06-30
+   Enlarges only the left presentation and lets the workflow
+   preview finish slightly below the login card on common
+   laptop/desktop viewport heights. The right panel is untouched.
+   ========================================================= */
+@media (min-width: 981px) and (min-height: 721px) {
+  .auth-showcase {
+    padding-top: clamp(20px, 2.8vh, 28px);
+    padding-bottom: clamp(16px, 2.3vh, 24px);
+  }
+
+  .showcase-brand {
+    margin-bottom: clamp(24px, 3.1vh, 30px);
+  }
+
+  .showcase-brand .brand-mark {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+  }
+
+  .showcase-brand .brand-mark svg {
+    width: 23px;
+    height: 23px;
+  }
+
+  .showcase-brand .brand-name {
+    font-size: 17px;
+  }
+
+  .showcase-brand .brand-caption {
+    margin-top: 3px;
+    font-size: 11px;
+  }
+
+  .showcase-pill {
+    gap: 9px;
+    margin-bottom: clamp(18px, 2.35vh, 23px);
+    padding: 8px 12px;
+    font-size: 11px;
+  }
+
+  .showcase-pill i {
+    width: 8px;
+    height: 8px;
+  }
+
+  .showcase-content h1 {
+    max-width: 720px;
+    font-size: clamp(60px, min(4.55vw, 8.9vh), 74px);
+    line-height: 1.015;
+    letter-spacing: clamp(-3.2px, -.18vw, -2px);
+  }
+
+  .showcase-content > p {
+    max-width: 650px;
+    margin-top: clamp(16px, 2.1vh, 20px);
+    font-size: clamp(13px, min(.95vw, 1.82vh), 15px);
+    line-height: 1.62;
+  }
+
+  .workflow-preview {
+    max-width: 770px;
+    margin-top: clamp(38px, 5vh, 46px);
+    padding: 14px;
+    border-radius: 19px;
+  }
+
+  .workflow-top {
+    padding: 3px 4px 12px;
+  }
+
+  .workflow-top strong {
+    font-size: 13px;
+  }
+
+  .workflow-top span {
+    font-size: 10px;
+  }
+
+  .workflow-row {
+    grid-template-columns: 42px minmax(0, 1fr) auto;
+    gap: 13px;
+    padding: 12px 14px;
+    border-radius: 13px;
+  }
+
+  .workflow-row + .workflow-row {
+    margin-top: 8px;
+  }
+
+  .workflow-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 11px;
+  }
+
+  .workflow-icon svg {
+    width: 19px;
+    height: 19px;
+  }
+
+  .workflow-copy strong {
+    font-size: 13px;
+  }
+
+  .workflow-copy span {
+    margin-top: 4px;
+    font-size: 10px;
+  }
+
+  .workflow-status {
+    padding: 6px 9px;
+    font-size: 10px;
+  }
+}
+
+/* Keep very short desktop windows inside the viewport. */
+@media (min-width: 981px) and (max-height: 720px) {
+  .showcase-brand .brand-name { font-size: 16px; }
+  .showcase-brand .brand-caption { font-size: 10px; }
+  .showcase-pill { font-size: 10px; }
+
+  .showcase-content h1 {
+    font-size: clamp(44px, min(3.8vw, 7.2vh), 54px);
+    line-height: 1;
+  }
+
+  .showcase-content > p {
+    font-size: 11px;
+    line-height: 1.45;
+  }
+
+  .workflow-preview {
+    margin-top: 18px;
+  }
+}

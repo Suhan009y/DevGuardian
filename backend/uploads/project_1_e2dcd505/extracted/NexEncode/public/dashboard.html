@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexEncode — Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;750&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/dashboard.css" />
+  <link rel="stylesheet" href="css/controls.css" />
+  <link rel="stylesheet" href="css/assistant.css" />
+  <link rel="stylesheet" href="css/account.css" />
+  <link rel="stylesheet" href="css/modern.css" />
+</head>
+<body>
+  <aside class="app-sidebar" id="app-sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-lockup">
+        <div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M6 5.5 11 12l-5 6.5h4.2l5-6.5-5-6.5H6Z" fill="currentColor"/><path d="M13.8 5.5 18.8 12l-5 6.5H18l5-6.5-5-6.5h-4.2Z" fill="currentColor" opacity=".55"/></svg></div>
+        <div class="brand-copy"><span class="brand-name">NexEncode</span><span class="brand-caption">Video workspace</span></div>
+      </div>
+    </div>
+    <nav class="sidebar-nav" aria-label="Workspace navigation">
+      <span class="sidebar-label">Workspace</span>
+      <button class="sidebar-link active" data-scroll-target="#upload-section"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4m0 0L7.5 8.5M12 4l4.5 4.5"/><path d="M4 15v4a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-4"/></svg><span>Upload & encode</span></button>
+      <button class="sidebar-link" data-scroll-target="#controls-section"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg><span>Encoding settings</span></button>
+      <button class="sidebar-link" data-scroll-target="#terminal-section"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m5 7 4 4-4 4M12 17h7"/><rect x="3" y="3" width="18" height="18" rx="3"/></svg><span>FFmpeg terminal</span></button>
+      <button class="sidebar-link" data-scroll-target="#assistant-section"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 10h8M8 14h5"/><path d="M20 15a4 4 0 0 1-4 4H9l-5 3v-7a4 4 0 0 1-1-2.6V8a4 4 0 0 1 4-4h9a4 4 0 0 1 4 4v7Z"/></svg><span>Encoding assistant</span></button>
+      <button class="sidebar-link" onclick="togglePanel('history')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5M12 7v5l3 2"/></svg><span>Conversion history</span></button>
+    </nav>
+    <div class="sidebar-spacer"></div>
+    <div class="sidebar-upgrade">
+      <strong>Need larger uploads?</strong>
+      <p>Premium unlocks files above the free 500 MB limit.</p>
+      <button class="icon-btn upgrade-btn" onclick="openPremiumModal()">View Premium</button>
+    </div>
+    <div class="sidebar-user">
+      <div class="sidebar-avatar">N</div>
+      <div class="sidebar-user-copy"><span class="sidebar-username">NexEncode user</span><small class="sidebar-user-role">Encoder workspace</small></div>
+    </div>
+  </aside>
+  <div class="mobile-backdrop" data-sidebar-close></div>
+
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="icon-btn mobile-menu-btn" data-sidebar-open aria-label="Open navigation"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+      <div class="topbar-context"><strong>Encoding workspace</strong><span>Configure, process, and review video jobs</span></div>
+      <span class="topbar-label" id="user-greeting">Loading...</span>
+    </div>
+    <div class="topbar-right">
+      <span class="plan-badge" id="plan-badge">Loading plan...</span>
+      <div class="notification-wrap">
+        <button class="icon-btn notification-button" id="notification-button" onclick="toggleNotifications()" title="Notifications" aria-label="Notifications"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span class="notification-count hidden" id="notification-count">0</span></button>
+        <div class="notification-menu" id="notification-menu">
+          <div class="notification-head"><strong>Notifications</strong><button onclick="markAllNotificationsRead()">Mark all read</button></div>
+          <div class="notification-list" id="notification-list"><div class="notification-empty">Loading...</div></div>
+          <button class="notification-permission" id="notification-permission" onclick="enableBrowserNotifications()">Enable browser notifications</button>
+        </div>
+      </div>
+      <button class="icon-btn theme-toggle" data-theme-toggle onclick="toggleTheme()" aria-label="Change theme"></button>
+      <button class="icon-btn upgrade-btn" id="upgrade-btn" onclick="openPremiumModal()">Upgrade</button>
+      <a class="icon-btn hidden" id="admin-link" href="/admin.html">Admin</a>
+      <button class="icon-btn" id="history-toggle-btn" onclick="togglePanel('history')" title="Job History"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 8v4l3 3m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>History</button>
+      <button class="icon-btn danger" onclick="logout()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M14 4h5a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-5"/></svg>Logout</button>
+    </div>
+  </header>
+
+  <section class="workspace-intro">
+    <div><span class="eyebrow">Video processing studio</span><h1>Make every frame lighter.</h1><p>Upload a source, tune the output, monitor FFmpeg in real time, and keep every conversion organized in one focused workspace.</p></div>
+    <div class="workspace-status"><i></i><span>Encoder service ready</span></div>
+  </section>
+
+  <section class="dashboard-overview">
+    <div class="overview-card spotlight reveal" style="--delay:40ms"><div class="metric-top"><span>Total jobs</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg></span></div><strong id="overview-jobs">—</strong><small>All submitted conversions</small></div>
+    <div class="overview-card spotlight reveal" style="--delay:80ms"><div class="metric-top"><span>Completed</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/></svg></span></div><strong id="overview-completed">—</strong><small>Successfully processed jobs</small></div>
+    <div class="overview-card spotlight reveal" style="--delay:120ms"><div class="metric-top"><span>Space saved</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 21h14"/></svg></span></div><strong id="overview-saved">—</strong><small>Reduced across all outputs</small></div>
+    <div class="overview-card spotlight reveal" style="--delay:160ms"><div class="metric-top"><span>Downloads</span><span class="metric-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M4 19h16"/></svg></span></div><strong id="overview-downloads">—</strong><small>Encoded files retrieved</small></div>
+    <div class="overview-chart-card spotlight reveal" style="--delay:200ms">
+      <div class="overview-chart-head"><div><strong>Encoding activity</strong><span>Jobs and downloads · last 7 days</span></div></div>
+      <canvas id="activity-chart" height="150"></canvas>
+    </div>
+  </section>
+
+  <!-- MAIN LAYOUT -->
+  <div class="app-layout">
+
+    <!-- LEFT COLUMN: Upload + Controls -->
+    <div class="col-left">
+
+      <!-- UPLOAD ZONE -->
+      <section class="card spotlight reveal" id="upload-section" style="--delay:60ms">
+        <div class="card-header">
+          <span class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            Upload Video
+          </span>
+        </div>
+        <div class="drop-zone" id="drop-zone">
+          <div class="drop-icon">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="m10 8 2-2 2 2"/><path d="M12 6v6"/></svg>
+          </div>
+          <p class="drop-primary">Drop your video here</p>
+          <p class="drop-secondary">MP4 · MKV · MOV · AVI · WEBM · FLV <span class="upload-limit" id="upload-limit-text">Checking account limit...</span></p>
+          <label class="btn-browse">
+            Browse File
+            <input type="file" id="file-input" accept="video/*" hidden />
+          </label>
+        </div>
+
+        <!-- Upload Progress -->
+        <div class="upload-progress-wrap hidden" id="upload-progress-wrap">
+          <div class="file-info-row" id="file-info-row">
+            <div class="file-icon" aria-hidden="true"></div>
+            <div class="file-meta">
+              <span class="file-name" id="file-name-label">filename.mp4</span>
+              <span class="file-size" id="file-size-label">0 MB</span>
+            </div>
+            <button class="clear-btn" onclick="clearFile()">✕</button>
+          </div>
+          <div class="progress-bar-outer">
+            <div class="progress-bar-inner" id="upload-bar" style="width:0%"></div>
+          </div>
+          <div class="progress-labels">
+            <span class="mono" id="upload-pct">0%</span>
+            <span class="mono" id="upload-speed"></span>
+          </div>
+        </div>
+
+        <!-- Probe Results -->
+        <div class="probe-results hidden" id="probe-results">
+          <div class="probe-grid" id="probe-grid"></div>
+          <div class="recommendation-badge" id="recommendation-badge"></div>
+        </div>
+      </section>
+
+      <!-- ENCODE CONTROLS -->
+      <section class="card spotlight reveal" id="controls-section" style="--delay:100ms">
+        <div class="card-header">
+          <span class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+            Encode Settings
+          </span>
+          <div class="estimate-badge hidden" id="estimate-badge">
+            <span class="est-label">Est. Output</span>
+            <span class="est-value" id="est-value">—</span>
+          </div>
+        </div>
+
+        <!-- Codec Selector -->
+        <div class="control-group">
+          <label class="control-label">Codec</label>
+          <div class="codec-pills" id="codec-pills">
+            <button class="pill active" data-codec="h264" onclick="selectCodec(this)">
+              <span class="pill-icon" aria-hidden="true"></span> H.264
+              <span class="pill-sub">Wider compat</span>
+            </button>
+            <button class="pill" data-codec="hevc" onclick="selectCodec(this)">
+              <span class="pill-icon" aria-hidden="true"></span> H.265 HEVC
+              <span class="pill-sub">~40% smaller</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Resolution -->
+        <div class="control-group">
+          <label class="control-label">Resolution</label>
+          <div class="res-grid" id="res-grid">
+            <button class="res-btn" data-res="360p" onclick="selectRes(this)">360p</button>
+            <button class="res-btn" data-res="480p" onclick="selectRes(this)">480p</button>
+            <button class="res-btn active" data-res="720p" onclick="selectRes(this)">720p</button>
+            <button class="res-btn" data-res="1080p" onclick="selectRes(this)">1080p</button>
+            <button class="res-btn" data-res="source" onclick="selectRes(this)">Source</button>
+          </div>
+        </div>
+
+        <!-- CRF Slider -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <label class="control-label">CRF (Quality)</label>
+            <div class="crf-display">
+              <span class="mono" id="crf-value">23</span>
+              <span class="crf-tag" id="crf-tag">Good</span>
+            </div>
+          </div>
+          <div class="slider-track-wrap">
+            <div class="slider-labels"><span class="mono">0</span><span class="mono">51</span></div>
+            <div class="custom-slider" id="crf-slider">
+              <div class="slider-track">
+                <div class="slider-fill" id="crf-fill"></div>
+                <div class="slider-thumb" id="crf-thumb" tabindex="0"></div>
+              </div>
+            </div>
+            <div class="crf-scale">
+              <span>Best Quality</span>
+              <span>Smallest Size</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Audio Bitrate Slider -->
+        <div class="control-group">
+          <div class="control-label-row">
+            <label class="control-label">Audio Bitrate</label>
+            <span class="mono accent" id="audio-value">128k</span>
+          </div>
+          <div class="custom-slider" id="audio-slider">
+            <div class="slider-track">
+              <div class="slider-fill" id="audio-fill"></div>
+              <div class="slider-thumb" id="audio-thumb" tabindex="0"></div>
+            </div>
+          </div>
+          <div class="slider-labels-end">
+            <span class="mono">64k</span>
+            <span class="mono">96k</span>
+            <span class="mono">128k</span>
+            <span class="mono">192k</span>
+            <span class="mono">256k</span>
+            <span class="mono">320k</span>
+          </div>
+        </div>
+
+        <!-- Sharpen Toggle -->
+        <div class="control-group">
+          <label class="control-label">Frame Enhancement</label>
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <span class="toggle-name">Sharpen Filter</span>
+              <span class="toggle-desc">Unsharp mask applied per-frame</span>
+            </div>
+            <label class="toggle-switch">
+              <input type="checkbox" id="sharpen-toggle" />
+              <span class="toggle-track"><span class="toggle-knob"></span></span>
+            </label>
+          </div>
+          <div class="sharpen-params hidden" id="sharpen-params">
+            <div class="sharpen-grid">
+              <div class="sharpen-field">
+                <span class="mono sm">Luma Strength</span>
+                <input type="number" id="sharpen-luma" value="1.0" step="0.1" min="0" max="2" class="mini-input" />
+              </div>
+              <div class="sharpen-field">
+                <span class="mono sm">Matrix Size</span>
+                <input type="number" id="sharpen-matrix" value="5" step="2" min="3" max="13" class="mini-input" />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Encode Button + Progress -->
+        <div class="encode-action">
+          <button class="btn-encode" id="encode-btn" onclick="startEncode()" disabled>
+            <span class="btn-encode-icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="m8 5 11 7-11 7V5Z"/></svg></span>
+            Start Encoding
+          </button>
+          <div class="encode-progress-wrap hidden" id="encode-progress-wrap">
+            <div class="encode-progress-bar">
+              <div class="encode-progress-fill" id="encode-fill"></div>
+              <div class="encode-progress-pulse"></div>
+            </div>
+            <div class="encode-progress-info">
+              <span class="mono" id="encode-pct">0%</span>
+              <span class="mono" id="encode-fps">— fps</span>
+              <span class="mono" id="encode-eta">ETA —</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Output Download -->
+        <div class="output-ready hidden" id="output-ready">
+          <div class="output-card">
+            <div class="output-stats" id="output-stats"></div>
+          </div>
+          <a class="btn-download" id="download-link" href="#" download>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v12M7 10l5 5 5-5M4 20h16"/></svg> Download encoded video
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <!-- RIGHT COLUMN: Terminal + Assistant -->
+    <div class="col-right">
+
+      <!-- FFMPEG TERMINAL -->
+      <section class="card terminal-card spotlight reveal" id="terminal-section" style="--delay:140ms">
+        <div class="card-header">
+          <span class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+            FFmpeg Terminal
+          </span>
+          <div class="terminal-actions">
+            <button class="icon-btn sm" onclick="clearTerminal()">Clear</button>
+            <button class="icon-btn sm" onclick="copyTerminalCmd()">Copy</button>
+          </div>
+        </div>
+        <div class="terminal-body" id="terminal-body">
+          <div class="terminal-prompt">
+            <span class="prompt-symbol">$</span>
+            <span class="prompt-text" id="prompt-text">ffmpeg</span>
+          </div>
+          <textarea
+            class="terminal-input"
+            id="terminal-input"
+            spellcheck="false"
+            placeholder="Enter FFmpeg arguments here...&#10;Example: -i {input} -c:v libx264 -crf 23 -preset fast {output}"
+          ></textarea>
+          <div class="terminal-log" id="terminal-log"></div>
+        </div>
+        <div class="terminal-footer">
+          <span class="mono sm dim">Use <code>{input}</code> and <code>{output}</code> as path placeholders</span>
+          <button class="btn-run" id="run-cmd-btn" onclick="runCustomCommand()" disabled>
+            Run Command ⏎
+          </button>
+        </div>
+      </section>
+
+      <!-- AI ASSISTANT -->
+      <section class="card assistant-card spotlight reveal" id="assistant-section" style="--delay:180ms">
+        <div class="card-header">
+          <span class="card-title">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="12" r="10"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            AI Assistant
+          </span>
+          <span class="badge-ai">Groq</span>
+        </div>
+        <div class="chat-messages" id="chat-messages">
+          <div class="chat-bubble assistant">
+            <div class="bubble-avatar"><svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M6 5.5 11 12l-5 6.5h4.2l5-6.5-5-6.5H6Z" fill="currentColor"/><path d="M13.8 5.5 18.8 12l-5 6.5H18l5-6.5-5-6.5h-4.2Z" fill="currentColor" opacity=".55"/></svg></div>
+            <div class="bubble-body">
+              <p>Hi! I'm your NexEncode assistant. I can help you:</p>
+              <ul>
+                <li>Understand encoding settings</li>
+                <li>Generate custom FFmpeg commands</li>
+                <li>Troubleshoot quality issues</li>
+                <li>Recommend the best codec for your content</li>
+              </ul>
+              <p>What would you like to know?</p>
+            </div>
+          </div>
+        </div>
+        <div class="chat-input-wrap">
+          <textarea
+            class="chat-input"
+            id="chat-input"
+            placeholder="Ask anything about encoding..."
+            rows="2"
+            onkeydown="handleChatKey(event)"
+          ></textarea>
+          <button class="chat-send-btn" id="chat-send-btn" onclick="sendMessage()" title="Send message" aria-label="Send message">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- HISTORY PANEL (slide-in) -->
+  <div class="history-overlay" id="history-overlay" onclick="togglePanel('history')"></div>
+  <div class="history-panel" id="history-panel">
+    <div class="history-header">
+      <span class="card-title">Job History</span>
+      <button class="icon-btn" onclick="togglePanel('history')">✕</button>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-row" id="stats-row">
+      <div class="stat-card">
+        <span class="stat-value" id="stat-total-jobs">—</span>
+        <span class="stat-label">Total Jobs</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value accent" id="stat-saved">—</span>
+        <span class="stat-label">Space Saved</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-value" id="stat-success-rate">—</span>
+        <span class="stat-label">Success Rate</span>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-wrap">
+      <canvas id="savings-chart" height="140"></canvas>
+    </div>
+
+    <!-- Job Table -->
+    <div class="history-table-wrap">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>File</th>
+            <th>Codec</th>
+            <th>Res</th>
+            <th>Original</th>
+            <th>Output</th>
+            <th>Saved</th>
+            <th>Status</th>
+            <th>Downloads</th>
+            <th>Available</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="history-tbody">
+          <tr><td colspan="10" class="loading-row">Loading history...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <!-- DEMO PREMIUM PAYMENT MODAL -->
+  <div class="premium-modal" id="premium-modal" onclick="if(event.target === this) closePremiumModal()">
+    <div class="premium-dialog demo-checkout-dialog">
+      <div class="premium-dialog-head">
+        <div>
+          <span class="card-title">NexEncode Premium</span>
+          <span class="demo-header-label">DEMO CHECKOUT</span>
+        </div>
+        <button class="icon-btn" onclick="closePremiumModal()" aria-label="Close Premium checkout">✕</button>
+      </div>
+      <div class="premium-dialog-body">
+        <div class="premium-plan-overview">
+          <div class="premium-plan-copy">
+            <div class="premium-kicker">Monthly Premium access</div>
+            <h2>Encode beyond 500 MB</h2>
+            <p class="premium-subtitle" id="premium-current-status">Loading your account status...</p>
+          </div>
+          <div class="premium-price-row">
+            <span class="premium-price" id="premium-price">₹199</span>
+            <span class="premium-period">/ <span id="premium-duration">30 days</span></span>
+          </div>
+        </div>
+
+        <div class="premium-features premium-feature-grid">
+          <div class="premium-feature"><span>Upload limit</span><strong id="premium-size">10 GB</strong></div>
+          <div class="premium-feature"><span>Premium badge</span><strong>Included</strong></div>
+          <div class="premium-feature"><span>Invoice PDF</span><strong>Generated</strong></div>
+        </div>
+
+        <section class="demo-payment-shell" id="demo-payment-shell" aria-label="Demo payment checkout">
+          <div class="demo-payment-header">
+            <div>
+              <h3>Choose a payment method</h3>
+              <p>Complete a simulated transaction for your project demonstration.</p>
+            </div>
+            <span class="demo-badge">DEMO</span>
+          </div>
+
+          <div class="demo-payment-warning">
+            Simulation only — do not enter real payment credentials. NexEncode does not send or store card numbers, CVV, UPI PINs, bank passwords, or wallet credentials.
+          </div>
+
+          <div class="payment-method-tabs" role="tablist" aria-label="Payment methods">
+            <button class="payment-method-tab active" type="button" data-method="credit_card" aria-selected="true" onclick="selectDemoPaymentMethod('credit_card')">Credit card</button>
+            <button class="payment-method-tab" type="button" data-method="debit_card" aria-selected="false" onclick="selectDemoPaymentMethod('debit_card')">Debit card</button>
+            <button class="payment-method-tab" type="button" data-method="upi" aria-selected="false" onclick="selectDemoPaymentMethod('upi')">UPI</button>
+            <button class="payment-method-tab" type="button" data-method="netbanking" aria-selected="false" onclick="selectDemoPaymentMethod('netbanking')">Net banking</button>
+            <button class="payment-method-tab" type="button" data-method="wallet" aria-selected="false" onclick="selectDemoPaymentMethod('wallet')">Wallet</button>
+          </div>
+
+          <div id="payment-details-step" class="payment-step">
+            <div id="payment-card-form" class="payment-method-form">
+              <div class="payment-form-title" id="demo-card-type-label">Credit card details</div>
+              <label class="payment-field payment-field-wide">
+                <span>Card number</span>
+                <input id="demo-card-number" type="text" inputmode="numeric" autocomplete="off" maxlength="23" placeholder="4111 1111 1111 1111" oninput="formatDemoCardNumber(this)">
+              </label>
+              <label class="payment-field payment-field-wide">
+                <span>Name on card</span>
+                <input id="demo-card-name" type="text" autocomplete="off" placeholder="Demo User">
+              </label>
+              <label class="payment-field">
+                <span>Expiry</span>
+                <input id="demo-card-expiry" type="text" inputmode="numeric" autocomplete="off" maxlength="5" placeholder="12/30" oninput="formatDemoExpiry(this)">
+              </label>
+              <label class="payment-field">
+                <span>CVV</span>
+                <input id="demo-card-cvv" type="password" inputmode="numeric" autocomplete="off" maxlength="4" placeholder="123">
+              </label>
+            </div>
+
+            <div id="payment-upi-form" class="payment-method-form hidden">
+              <div class="payment-form-title">Pay using UPI</div>
+              <label class="payment-field payment-field-wide">
+                <span>UPI ID</span>
+                <input id="demo-upi-id" type="text" autocomplete="off" placeholder="user@upi">
+              </label>
+              <div class="payment-method-explainer">A demo collect request will be simulated. No UPI app or UPI PIN is required.</div>
+            </div>
+
+            <div id="payment-netbanking-form" class="payment-method-form hidden">
+              <div class="payment-form-title">Select a demo bank</div>
+              <label class="payment-field payment-field-wide">
+                <span>Bank</span>
+                <select id="demo-bank">
+                  <option value="">Choose bank</option>
+                  <option value="sbi">State Bank of India</option>
+                  <option value="canara">Canara Bank</option>
+                  <option value="hdfc">HDFC Bank</option>
+                  <option value="icici">ICICI Bank</option>
+                  <option value="axis">Axis Bank</option>
+                </select>
+              </label>
+              <div class="payment-method-explainer">The bank login screen is simulated. No banking username or password is collected.</div>
+            </div>
+
+            <div id="payment-wallet-form" class="payment-method-form hidden">
+              <div class="payment-form-title">Select a demo wallet</div>
+              <label class="payment-field payment-field-wide">
+                <span>Wallet</span>
+                <select id="demo-wallet">
+                  <option value="">Choose wallet</option>
+                  <option value="phonepe">PhonePe</option>
+                  <option value="paytm">Paytm</option>
+                  <option value="amazonpay">Amazon Pay</option>
+                  <option value="mobikwik">MobiKwik</option>
+                </select>
+              </label>
+              <div class="payment-method-explainer">No real wallet account is opened or charged.</div>
+            </div>
+
+            <div class="demo-test-values" id="demo-test-values"><strong>Test details:</strong> 4111 1111 1111 1111 · 12/30 · CVV 123</div>
+            <button class="premium-action" id="premium-action" type="button" onclick="startPremiumUpgrade()">Continue · ₹199</button>
+          </div>
+
+          <div id="payment-otp-step" class="demo-otp-step hidden">
+            <div class="demo-otp-mark">✓</div>
+            <div class="premium-kicker">Demo authorization</div>
+            <h3>Confirm your simulated payment</h3>
+            <div class="demo-confirm-summary">
+              <span id="demo-confirm-method">Credit card</span>
+              <strong id="demo-confirm-amount">₹199</strong>
+            </div>
+            <p>Enter the demo OTP <strong id="demo-otp-code">123456</strong>. This is only a project simulation.</p>
+            <input id="demo-payment-otp" class="demo-otp-input" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="Enter 6-digit OTP">
+            <button class="premium-action" id="premium-confirm-action" type="button" onclick="confirmDemoPayment()">Pay ₹199</button>
+            <button class="demo-back-button" type="button" onclick="backToPaymentDetails()">Change payment method</button>
+          </div>
+        </section>
+
+        <div class="premium-note" id="premium-payment-note">Loading demo payment configuration...</div>
+        <div class="premium-message" id="premium-message"></div>
+        <div class="billing-history">
+          <div class="billing-title">Billing history & invoices</div>
+          <div id="billing-list" class="billing-list"><span>No paid invoices yet.</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Socket.io CDN -->
+  <script src="js/theme.js"></script>
+  <script src="js/modern-ui.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- App Scripts -->
+  <script src="js/socket.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/account.js"></script>
+  <script src="js/dashboard-insights.js"></script>
+  <script src="js/sliders.js"></script>
+  <script src="js/uploader.js"></script>
+  <script src="js/estimator.js"></script>
+  <script src="js/encoder.js"></script>
+  <script src="js/terminal.js"></script>
+  <script src="js/assistant.js"></script>
+  <script src="js/history.js"></script>
+</body>
+</html>

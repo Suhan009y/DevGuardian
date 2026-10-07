@@ -1,0 +1,12 @@
+node_modules/
+__pycache__/
+.env
+.venv/
+venv/
+*.pyc
+dist/
+build/
+.vscode/
+.idea/
+Docker volumes
+database files
